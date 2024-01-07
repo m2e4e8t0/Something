@@ -36,6 +36,8 @@
     }
     .update {
       margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
     }
   </style>
 </head>
@@ -81,6 +83,12 @@
         const updateDiv = document.createElement('div');
         updateDiv.classList.add('update');
         updateDiv.innerHTML = `<strong>${currentTime}:</strong> ${updateText}`;
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Clear';
+        deleteButton.onclick = function() {
+          deleteUpdate(this.parentElement, person);
+        };
+        updateDiv.appendChild(deleteButton);
         document.getElementById(`updates${person === 'person1' ? '1' : '2'}`).appendChild(updateDiv);
         document.getElementById(`updateText${person === 'person1' ? '1' : '2'}`).value = ''; // Clear the textarea after posting
         saveUpdate(person, updateDiv.innerHTML);
@@ -105,8 +113,25 @@
         const updateDiv = document.createElement('div');
         updateDiv.classList.add('update');
         updateDiv.innerHTML = update;
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Clear';
+        deleteButton.onclick = function() {
+          deleteUpdate(updateDiv, person);
+        };
+        updateDiv.appendChild(deleteButton);
         updatesElement.appendChild(updateDiv);
       });
+    }
+
+    function deleteUpdate(updateElement, person) {
+      const updatesElement = document.getElementById(`updates${person === 'person1' ? '1' : '2'}`);
+      const updates = JSON.parse(localStorage.getItem(person)) || [];
+      const index = Array.from(updatesElement.children).indexOf(updateElement);
+      if (index !== -1) {
+        updates.splice(index, 1);
+        localStorage.setItem(person, JSON.stringify(updates));
+        updatesElement.removeChild(updateElement);
+      }
     }
   </script>
 </body>
