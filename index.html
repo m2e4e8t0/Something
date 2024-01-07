@@ -68,6 +68,7 @@
       if (passwordInput === password) {
         document.getElementById('login').style.display = 'none';
         document.getElementById('content').style.display = 'flex';
+        displayUpdates();
       } else {
         alert('Incorrect password!');
       }
@@ -82,10 +83,31 @@
         updateDiv.innerHTML = `<strong>${currentTime}:</strong> ${updateText}`;
         document.getElementById(`updates${person === 'person1' ? '1' : '2'}`).appendChild(updateDiv);
         document.getElementById(`updateText${person === 'person1' ? '1' : '2'}`).value = ''; // Clear the textarea after posting
+        saveUpdate(person, updateDiv.innerHTML);
       }
+    }
+
+    function saveUpdate(person, update) {
+      const updates = JSON.parse(localStorage.getItem(person)) || [];
+      updates.push(update);
+      localStorage.setItem(person, JSON.stringify(updates));
+    }
+
+    function displayUpdates() {
+      displayStoredUpdates('person1', 'updates1');
+      displayStoredUpdates('person2', 'updates2');
+    }
+
+    function displayStoredUpdates(person, elementId) {
+      const updates = JSON.parse(localStorage.getItem(person)) || [];
+      const updatesElement = document.getElementById(elementId);
+      updates.forEach(update => {
+        const updateDiv = document.createElement('div');
+        updateDiv.classList.add('update');
+        updateDiv.innerHTML = update;
+        updatesElement.appendChild(updateDiv);
+      });
     }
   </script>
 </body>
 </html>
-
-
