@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daily Updates</title>
+  <style>
+    /* Basic styling - feel free to customize */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: space-around;
+    }
+    .column {
+      flex: 1;
+      margin: 0 10px;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    textarea, button {
+      display: block;
+      margin-bottom: 10px;
+      width: calc(100% - 20px);
+    }
+    button {
+      padding: 8px;
+      cursor: pointer;
+    }
+    .update {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div id="login">
+    <input type="password" id="passwordInput" placeholder="Enter Password">
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div id="content" style="display: none;">
+    <div class="column" id="person1">
+      <h2>Person 1's Updates</h2>
+      <textarea id="updateText1" rows="4" placeholder="Share your update..."></textarea>
+      <button onclick="addUpdate('person1')">Post Update</button>
+      <div id="updates1"></div>
+    </div>
+
+    <div class="column" id="person2">
+      <h2>Person 2's Updates</h2>
+      <textarea id="updateText2" rows="4" placeholder="Share your update..."></textarea>
+      <button onclick="addUpdate('person2')">Post Update</button>
+      <div id="updates2"></div>
+    </div>
+  </div>
+
+  <script>
+    const password = 'yourpassword'; // Replace with your desired password
+    function login() {
+      const passwordInput = document.getElementById('passwordInput').value;
+      if (passwordInput === password) {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('content').style.display = 'flex';
+      } else {
+        alert('Incorrect password!');
+      }
+    }
+
+    function addUpdate(person) {
+      const updateText = document.getElementById(`updateText${person === 'person1' ? '1' : '2'}`).value;
+      if (updateText.trim() !== '') {
+        const currentTime = new Date().toLocaleString();
+        const updateDiv = document.createElement('div');
+        updateDiv.classList.add('update');
+        updateDiv.innerHTML = `<strong>${currentTime}:</strong> ${updateText}`;
+        document.getElementById(`updates${person === 'person1' ? '1' : '2'}`).appendChild(updateDiv);
+        document.getElementById(`updateText${person === 'person1' ? '1' : '2'}`).value = ''; // Clear the textarea after posting
+      }
+    }
+  </script>
+</body>
+</html>
+
+
